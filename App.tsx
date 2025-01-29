@@ -1,16 +1,19 @@
 
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 
 import { SCREEN_ALIASES } from './constants/screenAliases';
 import { GlobalStyles } from './constants/styles';
+
 import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
+import IconButton from './components/UI/IconButton';
+
 
 
 const Stack = createNativeStackNavigator()
@@ -18,6 +21,12 @@ const BottomTab = createBottomTabNavigator()
 
 const ExpenseOverview = () => {
   const { Colors } = GlobalStyles
+  const navigation = useNavigation()
+
+  const handleHeaderRightPress = () => {
+    navigation.navigate(SCREEN_ALIASES.MANAGE_EXPENSE as never)
+  }
+
   return (
     <>
       <BottomTab.Navigator
@@ -25,7 +34,10 @@ const ExpenseOverview = () => {
           headerStyle: { backgroundColor: Colors.primary500 },
           headerTintColor: 'white',
           tabBarStyle: { backgroundColor: Colors.primary500 },
-          tabBarActiveTintColor: Colors.accent500
+          tabBarActiveTintColor: Colors.accent500,
+          headerRight: ({ tintColor }) => {
+            return <IconButton name='add' size={24} color={tintColor as string} onPress={handleHeaderRightPress} />
+          }
         }}>
         <BottomTab.Screen
           name={SCREEN_ALIASES.RECENT_EXPENSES}
@@ -55,12 +67,25 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={SCREEN_ALIASES.EXPENSE_OVERVIEW}>
-          <Stack.Screen name={SCREEN_ALIASES.MANAGE_EXPENSE} component={ManageExpense} />
+        <Stack.Navigator
+          initialRouteName={SCREEN_ALIASES.EXPENSE_OVERVIEW}
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.Colors.primary500 },
+            headerTintColor: 'white'
+          }}
+        >
           <Stack.Screen
             name={SCREEN_ALIASES.EXPENSE_OVERVIEW}
             component={ExpenseOverview}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={SCREEN_ALIASES.MANAGE_EXPENSE}
+            component={ManageExpense}
+            options={{
+              presentation: 'modal'
+            }}
+
           />
         </Stack.Navigator>
 
