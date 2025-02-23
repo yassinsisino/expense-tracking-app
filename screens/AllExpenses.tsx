@@ -8,8 +8,6 @@ const AllExpenses = () => {
 
   const { expenses } = useContext(ExpensesContext)
 
-  console.log('expenses', expenses)
-
   return (
     <ExpensesOutput
       expenses={expenses}
