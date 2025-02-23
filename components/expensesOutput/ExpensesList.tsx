@@ -1,5 +1,5 @@
 import React from "react"
-import { FlatList, Text, View } from "react-native"
+import { FlatList } from "react-native"
 
 import ExpenseItem from "./ExpenseItem"
 import { TExpense } from "../../types/expenses.types"
@@ -14,14 +14,15 @@ const renderExpenseItem = ({ item }: { item: TExpense }) => {
 }
 
 const ExpensesList: React.FC<IProps> = ({ expenses }) => {
+
+
+
   return (
-    <View>
-      <FlatList
-        data={expenses}
-        renderItem={renderExpenseItem}
-        keyExtractor={item => item.id.toString()}
-      />
-    </View>
+    <FlatList
+      data={expenses}
+      renderItem={renderExpenseItem}
+      keyExtractor={item => item.id.toString()}
+    />
   )
 }
 

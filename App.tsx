@@ -13,6 +13,7 @@ import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
 import IconButton from './components/UI/IconButton';
+import ExpensesContextProvider from './store/expense-context';
 
 
 
@@ -36,7 +37,12 @@ const ExpenseOverview = () => {
           tabBarStyle: { backgroundColor: Colors.primary500 },
           tabBarActiveTintColor: Colors.accent500,
           headerRight: ({ tintColor }) => {
-            return <IconButton name='add' size={24} color={tintColor as string} onPress={handleHeaderRightPress} />
+            return <IconButton
+              name='add'
+              size={24}
+              color={tintColor as string}
+              onPress={handleHeaderRightPress}
+            />
           }
         }}>
         <BottomTab.Screen
@@ -45,7 +51,12 @@ const ExpenseOverview = () => {
           options={{
             title: 'Recent Expenses',
             tabBarLabel: 'Recent',
-            tabBarIcon: ({ size, color }) => (<Ionicons name='hourglass' size={size} color={color} />)
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons
+                name='hourglass'
+                size={size}
+                color={color}
+              />)
           }}
         />
         <BottomTab.Screen
@@ -54,7 +65,12 @@ const ExpenseOverview = () => {
           options={{
             title: 'All Expenses',
             tabBarLabel: 'All Expenses',
-            tabBarIcon: ({ size, color }) => (<Ionicons name='calendar' size={size} color={color} />)
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons
+                name='calendar'
+                size={size}
+                color={color}
+              />)
           }}
         />
       </BottomTab.Navigator>
@@ -65,31 +81,32 @@ const ExpenseOverview = () => {
 export default function App() {
   return (
     <>
-      <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={SCREEN_ALIASES.EXPENSE_OVERVIEW}
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.Colors.primary500 },
-            headerTintColor: 'white'
-          }}
-        >
-          <Stack.Screen
-            name={SCREEN_ALIASES.EXPENSE_OVERVIEW}
-            component={ExpenseOverview}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={SCREEN_ALIASES.MANAGE_EXPENSE}
-            component={ManageExpense}
-            options={{
-              presentation: 'modal'
+      <StatusBar style="light" />
+      <ExpensesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={SCREEN_ALIASES.EXPENSE_OVERVIEW}
+            screenOptions={{
+              headerStyle: { backgroundColor: GlobalStyles.Colors.primary500 },
+              headerTintColor: 'white'
             }}
+          >
+            <Stack.Screen
+              name={SCREEN_ALIASES.EXPENSE_OVERVIEW}
+              component={ExpenseOverview}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={SCREEN_ALIASES.MANAGE_EXPENSE}
+              component={ManageExpense}
+              options={{
+                presentation: 'modal'
+              }}
 
-          />
-        </Stack.Navigator>
-
-      </NavigationContainer>
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpensesContextProvider>
     </>
   );
 }

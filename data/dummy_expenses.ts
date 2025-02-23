@@ -177,6 +177,7 @@ export const dummy_expenses = [
     "id": 30,
     "description": "Weekend Getaway",
     "amount": 300.00,
-    "date": new Date("2025-01-26")
+    "date": new Date("2025-02-20")
   }
 ]
+
