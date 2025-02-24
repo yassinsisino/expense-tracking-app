@@ -1,9 +1,10 @@
 import { useContext, useLayoutEffect } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, TextInput, View } from "react-native"
 import IconButton from "../components/UI/IconButton"
 import Button from "../components/UI/Button"
 import { GlobalStyles } from "../constants/styles"
 import { ExpensesContext } from "../store/expense-context"
+import ExpenseForm from "../components/ManageExpense/ExpenseForm"
 
 interface IProps {
   route: any
@@ -42,6 +43,7 @@ const ManageExpense: React.FC<IProps> = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <ExpenseForm />
       <View style={styles.buttonContainer}>
         <Button onPress={cancelHandler} mode="flat" style={styles.button}>
           Cancel
