@@ -5,9 +5,10 @@ interface IInputProps {
   label: string,
   textInputConfig: TextInputProps,
   style?: any,
+  invalid: boolean
 }
 
-const Input: React.FC<IInputProps> = ({ label, textInputConfig, style }) => {
+const Input: React.FC<IInputProps> = ({ label, textInputConfig, style, invalid }) => {
 
   const inputStyles = [styles.input]
   if (textInputConfig && textInputConfig.multiline)
@@ -15,8 +16,8 @@ const Input: React.FC<IInputProps> = ({ label, textInputConfig, style }) => {
 
   return (
     <View style={[styles.inputContainer, style]}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput style={inputStyles} {...textInputConfig} />
+      <Text style={[styles.label, invalid && styles.invalidLabel]}>{label}</Text>
+      <TextInput style={[inputStyles, invalid && styles.invalidInput]} {...textInputConfig} />
     </View>
   )
 }
@@ -44,5 +45,11 @@ const styles = StyleSheet.create({
   inputMultiline: {
     minHeight: 100,
     textAlignVertical: 'top'
+  },
+  invalidLabel: {
+    color: GlobalStyles.Colors.error500
+  },
+  invalidInput: {
+    backgroundColor: GlobalStyles.Colors.error50
   }
 })

@@ -1,6 +1,6 @@
 export type TExpense = {
-  id: number,
-  amount: number,
+  id?: number,
+  amount: number | string,
   description: string,
-  date: Date
+  date: Date | string
 }
