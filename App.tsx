@@ -14,6 +14,7 @@ import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
 import IconButton from './components/UI/IconButton';
 import ExpensesContextProvider from './store/expense-context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
 
@@ -79,34 +80,37 @@ const ExpenseOverview = () => {
 }
 
 export default function App() {
+  const queryClient = new QueryClient()
+
   return (
     <>
       <StatusBar style="light" />
-      <ExpensesContextProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName={SCREEN_ALIASES.EXPENSE_OVERVIEW}
-            screenOptions={{
-              headerStyle: { backgroundColor: GlobalStyles.Colors.primary500 },
-              headerTintColor: 'white'
-            }}
-          >
-            <Stack.Screen
-              name={SCREEN_ALIASES.EXPENSE_OVERVIEW}
-              component={ExpenseOverview}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name={SCREEN_ALIASES.MANAGE_EXPENSE}
-              component={ManageExpense}
-              options={{
-                presentation: 'modal'
+      <QueryClientProvider client={queryClient}>
+        <ExpensesContextProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName={SCREEN_ALIASES.EXPENSE_OVERVIEW}
+              screenOptions={{
+                headerStyle: { backgroundColor: GlobalStyles.Colors.primary500 },
+                headerTintColor: 'white'
               }}
-
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ExpensesContextProvider>
+            >
+              <Stack.Screen
+                name={SCREEN_ALIASES.EXPENSE_OVERVIEW}
+                component={ExpenseOverview}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name={SCREEN_ALIASES.MANAGE_EXPENSE}
+                component={ManageExpense}
+                options={{
+                  presentation: 'modal'
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ExpensesContextProvider>
+      </QueryClientProvider>
     </>
   );
 }

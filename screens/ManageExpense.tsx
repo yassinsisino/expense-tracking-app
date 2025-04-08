@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from "react"
+import { useContext, useLayoutEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 
 import IconButton from "../components/UI/IconButton"
@@ -7,6 +7,10 @@ import ExpenseForm from "../components/ManageExpense/ExpenseForm"
 import { ExpensesContext } from "../store/expense-context"
 import { GlobalStyles } from "../constants/styles"
 import { TExpense } from "../types/expenses.types"
+import { storeExpense } from "../utils/http"
+
+import Constants from "expo-constants"
+import { useMutation } from "@tanstack/react-query"
 
 interface IProps {
   route: any
@@ -17,6 +21,17 @@ interface IProps {
 const ManageExpense: React.FC<IProps> = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
   const isEditing = !!editedExpenseId
+
+
+  const mutation = useMutation({
+    mutationFn: async (expense: Partial<TExpense>) => storeExpense(expense),
+    onSuccess: (data) => {
+      console.log('Expense stored successfully:', data)
+    },
+    onError: (error) => {
+      console.error('Error storing expense:', error)
+    }
+  })
 
   const { expenses, deleteExpense, updateExpense, addExpense } = useContext(ExpensesContext)
 
@@ -40,8 +55,10 @@ const ManageExpense: React.FC<IProps> = ({ route, navigation }) => {
   const confirmHandler = (expenseData: TExpense) => {
     if (isEditing)
       updateExpense(editedExpenseId, { ...expenseData })
-    else
+    else {
+      mutation.mutate(expenseData)
       addExpense(expenseData)
+    }
     navigation.goBack()
   }
 
